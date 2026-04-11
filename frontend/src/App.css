@@ -6,37 +6,37 @@
 
 /* ── Theme variables ─────────────────────────────── */
 :root {
-  --bg:            #f5f0eb;
-  --bg-sidebar:    #ffffff;
-  --bg-textarea:   #fffef9;
-  --text:          #2c2c2c;
-  --text-date:     #5c4a2a;
-  --border:        #d4c9bb;
-  --accent:        #8b7355;
-  --accent-dark:   #5c4a2a;
-  --header-bg:     #2c2c2c;
-  --header-text:   #f5f0eb;
-  --status-saved:  #6b8c5a;
-  --status-unsaved:#c17b2a;
-  --cal-bg:        #ffffff;
-  --cal-text:      #1a1a1a;
+  --bg:             #eef2f7;
+  --bg-sidebar:     #ffffff;
+  --bg-textarea:    #f8fafc;
+  --text:           #1a2332;
+  --text-date:      #8b6914;
+  --text-stardate:  #4a6fa5;
+  --border:         #c5d0de;
+  --accent:         #c8922a;
+  --accent-dark:    #8b6914;
+  --header-bg:      #0a1628;
+  --header-text:    #c8d0e0;
+  --status-saved:   #3a8a5a;
+  --status-unsaved: #c8922a;
+  --cal-text:       #1a2332;
 }
 
 .dark {
-  --bg:            #1e1c18;
-  --bg-sidebar:    #252220;
-  --bg-textarea:   #211f1b;
-  --text:          #d4c9bb;
-  --text-date:     #c4a97a;
-  --border:        #3d3530;
-  --accent:        #a08060;
-  --accent-dark:   #c4a97a;
-  --header-bg:     #141210;
-  --header-text:   #d4c9bb;
-  --status-saved:  #7aaa66;
-  --status-unsaved:#d4924a;
-  --cal-bg:        #252220;
-  --cal-text:      #d4c9bb;
+  --bg:             #050810;
+  --bg-sidebar:     #090e1a;
+  --bg-textarea:    #07090f;
+  --text:           #a8bcdc;
+  --text-date:      #d4a030;
+  --text-stardate:  #5878a8;
+  --border:         #162040;
+  --accent:         #d4a030;
+  --accent-dark:    #a07820;
+  --header-bg:      #02040a;
+  --header-text:    #8aa0c0;
+  --status-saved:   #40b878;
+  --status-unsaved: #d4a030;
+  --cal-text:       #8aa0c0;
 }
 
 body {
@@ -51,23 +51,138 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: var(--bg);
+  transition: background 0.2s;
 }
 
-/* ── Header ─────────────────────────────────────── */
+/* ── Deep space starfield ─────────────────────────── */
+/*
+ * Built from layered CSS radial-gradients fixed to the viewport.
+ * Three tiers: faint background stars, medium stars, and a handful
+ * of bright stars with a soft glow. Nebula washes add depth.
+ */
+.dark.app {
+  background-color: #050810;
+  background-attachment: fixed;
+  background-image:
+    /* ── Nebula washes ── */
+    radial-gradient(ellipse at 12% 38%, rgba(28, 48, 140, 0.13) 0%, transparent 55%),
+    radial-gradient(ellipse at 78% 12%, rgba(90, 18, 130, 0.09) 0%, transparent 45%),
+    radial-gradient(ellipse at 88% 78%, rgba(8, 55, 120, 0.11) 0%, transparent 42%),
+    radial-gradient(ellipse at 45% 90%, rgba(20, 40, 100, 0.08) 0%, transparent 38%),
+
+    /* ── Bright stars (point + glow) ── */
+    radial-gradient(2px 2px at  567px 134px, rgba(255,255,255,0.95) 0%, transparent 100%),
+    radial-gradient(7px 7px at  567px 134px, rgba(200,220,255,0.18) 0%, transparent 100%),
+    radial-gradient(2px 2px at 1234px 289px, rgba(255,255,255,0.92) 0%, transparent 100%),
+    radial-gradient(7px 7px at 1234px 289px, rgba(255,255,255,0.14) 0%, transparent 100%),
+    radial-gradient(2px 2px at  789px 567px, rgba(180,212,255,0.95) 0%, transparent 100%),
+    radial-gradient(8px 8px at  789px 567px, rgba(180,212,255,0.18) 0%, transparent 100%),
+    radial-gradient(2px 2px at 1678px 445px, rgba(255,255,255,0.90) 0%, transparent 100%),
+    radial-gradient(6px 6px at 1678px 445px, rgba(255,255,255,0.14) 0%, transparent 100%),
+    radial-gradient(2px 2px at 1012px 178px, rgba(255,246,195,0.95) 0%, transparent 100%),
+    radial-gradient(7px 7px at 1012px 178px, rgba(255,238,140,0.16) 0%, transparent 100%),
+    radial-gradient(2px 2px at  312px 712px, rgba(255,255,255,0.88) 0%, transparent 100%),
+    radial-gradient(6px 6px at  312px 712px, rgba(255,255,255,0.13) 0%, transparent 100%),
+    radial-gradient(2px 2px at 1456px 823px, rgba(200,222,255,0.90) 0%, transparent 100%),
+    radial-gradient(6px 6px at 1456px 823px, rgba(200,222,255,0.14) 0%, transparent 100%),
+
+    /* ── Medium stars ── */
+    radial-gradient(1px 1px at  234px  89px, rgba(200,215,255,0.60) 0%, transparent 100%),
+    radial-gradient(1px 1px at  678px 178px, rgba(200,215,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1123px  67px, rgba(200,215,255,0.58) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1567px 178px, rgba(200,215,255,0.52) 0%, transparent 100%),
+    radial-gradient(1px 1px at  445px 256px, rgba(200,215,255,0.62) 0%, transparent 100%),
+    radial-gradient(1px 1px at  901px 412px, rgba(200,215,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1345px 289px, rgba(200,215,255,0.58) 0%, transparent 100%),
+    radial-gradient(1px 1px at  756px 623px, rgba(200,215,255,0.53) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1634px 678px, rgba(200,215,255,0.50) 0%, transparent 100%),
+    radial-gradient(1px 1px at  623px 756px, rgba(200,215,255,0.56) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1067px 845px, rgba(200,215,255,0.53) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1945px 590px, rgba(200,215,255,0.60) 0%, transparent 100%),
+    radial-gradient(1px 1px at  890px 178px, rgba(200,215,255,0.62) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1778px 123px, rgba(200,215,255,0.54) 0%, transparent 100%),
+    radial-gradient(1px 1px at  267px 312px, rgba(200,215,255,0.57) 0%, transparent 100%),
+    radial-gradient(1px 1px at  812px 489px, rgba(200,215,255,0.59) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1389px 534px, rgba(200,215,255,0.52) 0%, transparent 100%),
+    radial-gradient(1px 1px at  534px 934px, rgba(200,215,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1190px 956px, rgba(200,215,255,0.50) 0%, transparent 100%),
+
+    /* ── Faint background stars ── */
+    radial-gradient(1px 1px at  145px  67px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at  523px 234px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at  890px  45px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1234px 156px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1678px  89px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at  234px 456px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at  756px 321px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1123px 445px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1567px 234px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1890px 167px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at   67px 234px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at  412px 567px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at  845px 678px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1290px 590px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1734px 467px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at  189px 789px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at  634px 890px, rgba(200,215,255,0.26) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1078px 756px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1456px 845px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1901px 678px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at  356px 123px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at  789px 234px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1178px 145px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1590px 323px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at   45px 456px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at  567px 678px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1034px 890px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1467px 712px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1823px 534px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at  278px 890px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at  712px 145px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1156px 378px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1601px 589px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at  134px 567px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at  489px 345px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at  923px 234px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1345px 467px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1789px 345px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at   56px 123px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at  678px 456px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1112px 567px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1534px 234px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1967px 456px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at  856px 789px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1289px 678px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1723px 789px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at  389px 678px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at  967px 567px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1445px 123px, rgba(200,215,255,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1878px 890px, rgba(200,215,255,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at  102px 934px, rgba(200,215,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 1756px 956px, rgba(200,215,255,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at  734px 978px, rgba(200,215,255,0.23) 0%, transparent 100%);
+}
+
+/* ── Header — always deep space ──────────────────── */
 .app-header {
   background: var(--header-bg);
   color: var(--header-text);
   padding: 14px 24px;
-  border-bottom: 3px solid var(--accent);
+  border-bottom: 1px solid rgba(212, 160, 48, 0.35);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 10;
 }
 
 .app-header h1 {
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   font-weight: normal;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--header-text);
 }
 
 .header-actions {
@@ -75,27 +190,33 @@ body {
   gap: 8px;
 }
 
-.dark-toggle {
+.header-btn {
   background: none;
-  border: 1px solid var(--accent);
+  border: 1px solid rgba(212, 160, 48, 0.35);
   color: var(--header-text);
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 5px 12px;
   font-family: system-ui, sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.15s;
+  opacity: 0.70;
+  transition: opacity 0.15s, border-color 0.15s, color 0.15s;
 }
 
-.dark-toggle:hover {
+.header-btn:hover {
   opacity: 1;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ── Body layout ─────────────────────────────────── */
 .app-body {
   display: flex;
   flex: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .sidebar {
@@ -123,34 +244,49 @@ body {
   margin-bottom: 16px;
 }
 
-.entry-date {
+.entry-heading {
   flex: 1;
   text-align: center;
-  font-size: 1.35rem;
+}
+
+.entry-date {
+  font-size: 1.3rem;
   font-weight: normal;
   color: var(--text-date);
+}
+
+.entry-stardate {
+  margin-top: 4px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--text-stardate);
+  text-transform: uppercase;
 }
 
 .nav-btn {
   width: 36px;
   height: 36px;
   border: 1px solid var(--accent);
-  border-radius: 4px;
+  border-radius: 2px;
   background: none;
   color: var(--accent);
   font-size: 1.2rem;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
   line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.8;
 }
 
 .nav-btn:hover:not(:disabled) {
   background: var(--accent);
-  color: #fff;
+  color: #050810;
+  opacity: 1;
 }
 
 .nav-btn:disabled {
-  opacity: 0.28;
+  opacity: 0.18;
   cursor: default;
 }
 
@@ -161,7 +297,7 @@ body {
   min-height: 420px;
   padding: 16px 18px;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 2px;
   background: var(--bg-textarea);
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1rem;
@@ -186,7 +322,9 @@ body {
 
 .status {
   font-family: system-ui, sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .status.saved   { color: var(--status-saved); }
@@ -196,10 +334,12 @@ body {
   background: var(--accent-dark);
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 8px 22px;
   font-family: system-ui, sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -209,7 +349,7 @@ body {
 }
 
 .save-btn:disabled {
-  opacity: 0.45;
+  opacity: 0.35;
   cursor: default;
 }
 
@@ -219,8 +359,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent);
-  font-size: 1rem;
+  color: var(--text-stardate);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
 /* ── react-calendar overrides ────────────────────── */
@@ -259,7 +401,7 @@ body {
 }
 
 .dark .react-calendar__tile--now {
-  background: #3a3020 !important;
+  background: #0f1e38 !important;
 }
 
 .react-calendar__tile--active {
@@ -283,12 +425,12 @@ body {
   bottom: 5px;
   left: 50%;
   transform: translateX(-50%);
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--accent);
 }
 
 .react-calendar__tile--active.has-entry::after {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.7);
 }

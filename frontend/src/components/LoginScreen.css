@@ -3,13 +3,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg, #f5f0eb);
+  background: var(--header-bg, #0a1628);
 }
 
 .login-box {
   background: var(--bg-sidebar, #fff);
-  border: 1px solid var(--border, #d4c9bb);
-  border-radius: 6px;
+  border: 1px solid var(--accent, #c8922a);
+  border-radius: 3px;
   padding: 48px 40px;
   width: 320px;
   display: flex;
@@ -20,10 +20,11 @@
 
 .login-box h1 {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: normal;
-  letter-spacing: 0.12em;
-  color: var(--text, #2c2c2c);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text, #1a2332);
 }
 
 .login-box form {

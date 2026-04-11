@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { toStardate } from '../utils.js'
 
 function displayDate(dateStr) {
   const [year, month, day] = dateStr.split('-').map(Number)
@@ -16,7 +17,6 @@ export default function EntryEditor({ entry, loading, onSave, onNavigate }) {
   const [saving, setSaving] = useState(false)
   const saveRef = useRef(null)
 
-  // Sync content when entry changes
   useEffect(() => {
     if (entry !== null) {
       setContent(entry.content ?? '')
@@ -37,7 +37,6 @@ export default function EntryEditor({ entry, loading, onSave, onNavigate }) {
     }
   }
 
-  // Keep ref current so keyboard shortcut always calls latest version
   saveRef.current = handleSave
 
   useEffect(() => {
@@ -75,7 +74,10 @@ export default function EntryEditor({ entry, loading, onSave, onNavigate }) {
         >
           ←
         </button>
-        <h2 className="entry-date">{displayDate(entry.date)}</h2>
+        <div className="entry-heading">
+          <h2 className="entry-date">{displayDate(entry.date)}</h2>
+          <p className="entry-stardate">Stardate {toStardate(entry.date)}</p>
+        </div>
         <button
           className="nav-btn"
           onClick={() => handleNavigate(entry.next_date)}
@@ -90,7 +92,7 @@ export default function EntryEditor({ entry, loading, onSave, onNavigate }) {
         className="entry-content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Write your journal entry here…"
+        placeholder="Captain's log, supplemental…"
       />
 
       <div className="entry-footer">

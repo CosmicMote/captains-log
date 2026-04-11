@@ -37,7 +37,7 @@ export default function LoginScreen({ onLogin }) {
   return (
     <div className="login-screen">
       <div className="login-box">
-        <h1>Journal</h1>
+        <h1>Captain's Log</h1>
         <form onSubmit={handleSubmit}>
           <input
             type="password"

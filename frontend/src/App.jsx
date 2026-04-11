@@ -119,12 +119,12 @@ export default function App() {
   return (
     <div className={darkMode ? 'app dark' : 'app'}>
       <header className="app-header">
-        <h1>Journal</h1>
+        <h1>Captain's Log</h1>
         <div className="header-actions">
-          <button className="dark-toggle" onClick={toggleDarkMode}>
+          <button className="header-btn" onClick={toggleDarkMode}>
             {darkMode ? '☀ Light' : '☾ Dark'}
           </button>
-          <button className="dark-toggle" onClick={handleLogout}>
+          <button className="header-btn" onClick={handleLogout}>
             Sign Out
           </button>
         </div>
