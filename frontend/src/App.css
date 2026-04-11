@@ -1,0 +1,201 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #f5f0eb;
+  color: #2c2c2c;
+  min-height: 100vh;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────────── */
+.app-header {
+  background: #2c2c2c;
+  color: #f5f0eb;
+  padding: 14px 24px;
+  border-bottom: 3px solid #8b7355;
+}
+
+.app-header h1 {
+  font-size: 1.7rem;
+  font-weight: normal;
+  letter-spacing: 0.12em;
+}
+
+/* ── Body layout ─────────────────────────────────── */
+.app-body {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 310px;
+  flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid #d4c9bb;
+  padding: 20px 16px;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 32px;
+  max-width: 860px;
+}
+
+/* ── Entry header (date + nav) ───────────────────── */
+.entry-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.entry-date {
+  flex: 1;
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: normal;
+  color: #5c4a2a;
+}
+
+.nav-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #8b7355;
+  border-radius: 4px;
+  background: none;
+  color: #8b7355;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: #8b7355;
+  color: #fff;
+}
+
+.nav-btn:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+/* ── Textarea ────────────────────────────────────── */
+.entry-content {
+  flex: 1;
+  width: 100%;
+  min-height: 420px;
+  padding: 16px 18px;
+  border: 1px solid #d4c9bb;
+  border-radius: 4px;
+  background: #fffef9;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #2c2c2c;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.entry-content:focus {
+  border-color: #8b7355;
+}
+
+/* ── Footer (status + save) ──────────────────────── */
+.entry-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.status {
+  font-family: system-ui, sans-serif;
+  font-size: 0.82rem;
+}
+
+.status.saved  { color: #6b8c5a; }
+.status.unsaved { color: #c17b2a; }
+
+.save-btn {
+  background: #5c4a2a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 22px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: #8b7355;
+}
+
+.save-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* ── Loading state ───────────────────────────────── */
+.loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8b7355;
+  font-size: 1rem;
+}
+
+/* ── react-calendar overrides ────────────────────── */
+.react-calendar {
+  width: 100% !important;
+  border: none !important;
+  background: transparent !important;
+  font-family: system-ui, sans-serif !important;
+}
+
+.react-calendar__tile--active {
+  background: #5c4a2a !important;
+  color: #fff !important;
+}
+
+.react-calendar__tile--active:hover,
+.react-calendar__tile--active:focus {
+  background: #7a6240 !important;
+}
+
+/* dot indicator for dates with entries */
+.react-calendar__tile.has-entry {
+  position: relative;
+}
+
+.react-calendar__tile.has-entry::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #8b7355;
+}
+
+.react-calendar__tile--active.has-entry::after {
+  background: rgba(255, 255, 255, 0.8);
+}
