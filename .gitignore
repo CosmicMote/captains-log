@@ -18,6 +18,9 @@ dist/
 .env
 .env.*
 
+# Auth config (contains hashed password + JWT secret)
+backend/auth_config.json
+
 # OS
 .DS_Store
 Thumbs.db

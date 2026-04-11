@@ -17,3 +17,7 @@ class JournalEntryResponse(BaseModel):
 
 class JournalEntryUpsert(BaseModel):
     content: str
+
+
+class LoginRequest(BaseModel):
+    password: str
