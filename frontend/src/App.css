@@ -4,11 +4,47 @@
   padding: 0;
 }
 
+/* ── Theme variables ─────────────────────────────── */
+:root {
+  --bg:            #f5f0eb;
+  --bg-sidebar:    #ffffff;
+  --bg-textarea:   #fffef9;
+  --text:          #2c2c2c;
+  --text-date:     #5c4a2a;
+  --border:        #d4c9bb;
+  --accent:        #8b7355;
+  --accent-dark:   #5c4a2a;
+  --header-bg:     #2c2c2c;
+  --header-text:   #f5f0eb;
+  --status-saved:  #6b8c5a;
+  --status-unsaved:#c17b2a;
+  --cal-bg:        #ffffff;
+  --cal-text:      #1a1a1a;
+}
+
+.dark {
+  --bg:            #1e1c18;
+  --bg-sidebar:    #252220;
+  --bg-textarea:   #211f1b;
+  --text:          #d4c9bb;
+  --text-date:     #c4a97a;
+  --border:        #3d3530;
+  --accent:        #a08060;
+  --accent-dark:   #c4a97a;
+  --header-bg:     #141210;
+  --header-text:   #d4c9bb;
+  --status-saved:  #7aaa66;
+  --status-unsaved:#d4924a;
+  --cal-bg:        #252220;
+  --cal-text:      #d4c9bb;
+}
+
 body {
   font-family: Georgia, 'Times New Roman', serif;
-  background: #f5f0eb;
-  color: #2c2c2c;
+  background: var(--bg);
+  color: var(--text);
   min-height: 100vh;
+  transition: background 0.2s, color 0.2s;
 }
 
 .app {
@@ -19,16 +55,36 @@ body {
 
 /* ── Header ─────────────────────────────────────── */
 .app-header {
-  background: #2c2c2c;
-  color: #f5f0eb;
+  background: var(--header-bg);
+  color: var(--header-text);
   padding: 14px 24px;
-  border-bottom: 3px solid #8b7355;
+  border-bottom: 3px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .app-header h1 {
   font-size: 1.7rem;
   font-weight: normal;
   letter-spacing: 0.12em;
+}
+
+.dark-toggle {
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--header-text);
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+}
+
+.dark-toggle:hover {
+  opacity: 1;
 }
 
 /* ── Body layout ─────────────────────────────────── */
@@ -40,9 +96,10 @@ body {
 .sidebar {
   width: 310px;
   flex-shrink: 0;
-  background: #fff;
-  border-right: 1px solid #d4c9bb;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
   padding: 20px 16px;
+  transition: background 0.2s;
 }
 
 .main-content {
@@ -66,16 +123,16 @@ body {
   text-align: center;
   font-size: 1.35rem;
   font-weight: normal;
-  color: #5c4a2a;
+  color: var(--text-date);
 }
 
 .nav-btn {
   width: 36px;
   height: 36px;
-  border: 1px solid #8b7355;
+  border: 1px solid var(--accent);
   border-radius: 4px;
   background: none;
-  color: #8b7355;
+  color: var(--accent);
   font-size: 1.2rem;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -83,7 +140,7 @@ body {
 }
 
 .nav-btn:hover:not(:disabled) {
-  background: #8b7355;
+  background: var(--accent);
   color: #fff;
 }
 
@@ -98,20 +155,20 @@ body {
   width: 100%;
   min-height: 420px;
   padding: 16px 18px;
-  border: 1px solid #d4c9bb;
+  border: 1px solid var(--border);
   border-radius: 4px;
-  background: #fffef9;
+  background: var(--bg-textarea);
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1rem;
   line-height: 1.75;
-  color: #2c2c2c;
+  color: var(--text);
   resize: vertical;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, background 0.2s, color 0.2s;
 }
 
 .entry-content:focus {
-  border-color: #8b7355;
+  border-color: var(--accent);
 }
 
 /* ── Footer (status + save) ──────────────────────── */
@@ -127,11 +184,11 @@ body {
   font-size: 0.82rem;
 }
 
-.status.saved  { color: #6b8c5a; }
-.status.unsaved { color: #c17b2a; }
+.status.saved   { color: var(--status-saved); }
+.status.unsaved { color: var(--status-unsaved); }
 
 .save-btn {
-  background: #5c4a2a;
+  background: var(--accent-dark);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -143,7 +200,7 @@ body {
 }
 
 .save-btn:hover:not(:disabled) {
-  background: #8b7355;
+  background: var(--accent);
 }
 
 .save-btn:disabled {
@@ -157,7 +214,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8b7355;
+  color: var(--accent);
   font-size: 1rem;
 }
 
@@ -169,14 +226,45 @@ body {
   font-family: system-ui, sans-serif !important;
 }
 
+.dark .react-calendar {
+  color: var(--cal-text) !important;
+}
+
+.dark .react-calendar__navigation button {
+  color: var(--cal-text) !important;
+}
+
+.dark .react-calendar__navigation button:hover,
+.dark .react-calendar__navigation button:focus {
+  background: var(--border) !important;
+}
+
+.dark .react-calendar__month-view__weekdays {
+  color: var(--accent) !important;
+}
+
+.dark .react-calendar__tile {
+  color: var(--cal-text) !important;
+  background: none !important;
+}
+
+.dark .react-calendar__tile:hover,
+.dark .react-calendar__tile:focus {
+  background: var(--border) !important;
+}
+
+.dark .react-calendar__tile--now {
+  background: #3a3020 !important;
+}
+
 .react-calendar__tile--active {
-  background: #5c4a2a !important;
+  background: var(--accent-dark) !important;
   color: #fff !important;
 }
 
 .react-calendar__tile--active:hover,
 .react-calendar__tile--active:focus {
-  background: #7a6240 !important;
+  background: var(--accent) !important;
 }
 
 /* dot indicator for dates with entries */
@@ -193,7 +281,7 @@ body {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #8b7355;
+  background: var(--accent);
 }
 
 .react-calendar__tile--active.has-entry::after {

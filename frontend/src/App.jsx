@@ -12,6 +12,16 @@ export default function App() {
   const [entry, setEntry] = useState(null)       // null = not yet loaded
   const [entryDates, setEntryDates] = useState([])
   const [loading, setLoading] = useState(false)
+  const [darkMode, setDarkMode] = useState(
+    () => localStorage.getItem('darkMode') === 'true'
+  )
+
+  const toggleDarkMode = () => {
+    setDarkMode(prev => {
+      localStorage.setItem('darkMode', !prev)
+      return !prev
+    })
+  }
 
   const loadEntryDates = useCallback(async () => {
     try {
@@ -70,9 +80,12 @@ export default function App() {
   }, [])
 
   return (
-    <div className="app">
+    <div className={darkMode ? 'app dark' : 'app'}>
       <header className="app-header">
         <h1>Journal</h1>
+        <button className="dark-toggle" onClick={toggleDarkMode}>
+          {darkMode ? '☀ Light' : '☾ Dark'}
+        </button>
       </header>
       <div className="app-body">
         <CalendarSidebar
