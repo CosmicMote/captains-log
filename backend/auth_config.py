@@ -36,3 +36,22 @@ def set_password_hash(hashed: str) -> None:
     config = _load()
     config["password_hash"] = hashed
     _save(config)
+
+
+def get_ssl_config() -> dict | None:
+    """Return SSL config dict with 'certfile' and 'keyfile', or None if not configured."""
+    return _load().get("ssl")
+
+
+def set_ssl_config(certfile: str, keyfile: str) -> None:
+    """Persist SSL certificate and key file paths."""
+    config = _load()
+    config["ssl"] = {"certfile": certfile, "keyfile": keyfile}
+    _save(config)
+
+
+def clear_ssl_config() -> None:
+    """Remove SSL configuration (reverts to HTTP)."""
+    config = _load()
+    config.pop("ssl", None)
+    _save(config)

@@ -21,6 +21,12 @@ dist/
 # Auth config (contains hashed password + JWT secret)
 backend/auth_config.json
 
+# TLS certificates
+backend/certs/
+
+# Frontend env (may contain local URLs)
+frontend/.env
+
 # OS
 .DS_Store
 Thumbs.db

@@ -5,7 +5,7 @@ import LoginScreen from './components/LoginScreen.jsx'
 import { formatDate } from './utils.js'
 import './App.css'
 
-const API_BASE = 'http://localhost:8000'
+const API_BASE = '/api'
 
 export default function App() {
   const today = formatDate(new Date())
