@@ -18,7 +18,54 @@ A personal journal application with a Star Trek: The Next Generation theme. Writ
 - **Backend**: Python, FastAPI, SQLAlchemy, SQLite
 - **Frontend**: React, Vite, react-calendar
 
-## Setup
+---
+
+## Running with Docker
+
+### Build the image
+
+From the project root:
+
+```bash
+docker build -t captains-log .
+```
+
+### Run the container
+
+```bash
+docker run -d \
+  --name captains-log \
+  -p 8080:80 \
+  -v captains-log-data:/data \
+  captains-log
+```
+
+The app will be available at `http://localhost:8080`.
+
+The `/data` volume holds the database and auth config and persists across container restarts.
+
+### Set the password (first-time setup)
+
+```bash
+docker exec -it captains-log python /app/backend/setup_password.py
+```
+
+### Import a RedNotebook journal into Docker
+
+Copy your RedNotebook data into the container and run the import tool:
+
+```bash
+docker cp C:\Users\you\.rednotebook captains-log:/tmp/.rednotebook
+docker exec -it captains-log python /app/backend/import_rednotebook.py /data/journal.db /tmp/.rednotebook
+```
+
+### HTTPS in Docker
+
+For production use, place a reverse proxy (nginx, Caddy, Traefik) in front of the container to handle TLS termination, and point it at `http://localhost:8080`. This is simpler and more flexible than managing certs inside the container.
+
+---
+
+## Local Development Setup
 
 ### 1. Backend
 
@@ -54,15 +101,18 @@ npm run dev
 
 The app will be available at `http://localhost:5173`.
 
-The frontend reads the backend URL from `frontend/.env`. Copy the example file to get started:
+Copy the env example file to configure the backend URL:
 
 ```bash
 cp .env.example .env
 ```
 
-## HTTPS
+Vite proxies all `/api/*` requests to the backend, so self-signed cert warnings are
+handled transparently in dev.
 
-### Option A — Self-signed certificate (development)
+## HTTPS (local development)
+
+### Option A — Self-signed certificate
 
 ```bash
 cd backend
@@ -76,13 +126,11 @@ so `start.py` enables HTTPS automatically from then on.
 Your browser will show a security warning on first visit. To silence it, add `backend/certs/cert.pem`
 to your system's trusted certificate store.
 
-When using HTTPS, update `frontend/.env` to match:
+Update `frontend/.env` to point Vite's proxy at the HTTPS backend:
 
 ```
 VITE_API_BASE=https://localhost:8000
 ```
-
-Also update the CORS origin in `backend/main.py` if the frontend URL changes.
 
 ### Option B — Real certificate (e.g. Let's Encrypt)
 

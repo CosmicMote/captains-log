@@ -1,0 +1,20 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+backend/journal.db
+backend/auth_config.json
+backend/certs/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Docs / misc
+README.md
+*.md

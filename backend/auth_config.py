@@ -1,10 +1,13 @@
 """Manages the auth config file (hashed password + JWT secret)."""
 
 import json
+import os
 import secrets
 from pathlib import Path
 
-CONFIG_PATH = Path(__file__).parent / "auth_config.json"
+# Mirrors the logic in database.py — dev uses the backend dir, Docker uses /data.
+_data_dir = Path(os.environ.get("JOURNAL_DATA_DIR", Path(__file__).parent))
+CONFIG_PATH = _data_dir / "auth_config.json"
 
 
 def _load() -> dict:
