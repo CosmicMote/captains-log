@@ -379,6 +379,7 @@ body {
 
 .dark .react-calendar__navigation button {
   color: var(--cal-text) !important;
+  background: none !important;
 }
 
 .dark .react-calendar__navigation button:hover,
