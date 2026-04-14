@@ -11,7 +11,7 @@ function displayDate(dateStr) {
   })
 }
 
-export default function EntryEditor({ entry, loading, onSave, onNavigate }) {
+export default function EntryEditor({ entry, loading, prevEntryDate, nextEntryDate, onSave, onNavigate }) {
   const [content, setContent] = useState('')
   const [savedContent, setSavedContent] = useState('')
   const [saving, setSaving] = useState(false)
@@ -68,8 +68,8 @@ export default function EntryEditor({ entry, loading, onSave, onNavigate }) {
       <div className="entry-header">
         <button
           className="nav-btn"
-          onClick={() => handleNavigate(entry.prev_date)}
-          disabled={!entry.prev_date}
+          onClick={() => handleNavigate(prevEntryDate)}
+          disabled={!prevEntryDate}
           title="Previous entry"
         >
           ←
@@ -80,8 +80,8 @@ export default function EntryEditor({ entry, loading, onSave, onNavigate }) {
         </div>
         <button
           className="nav-btn"
-          onClick={() => handleNavigate(entry.next_date)}
-          disabled={!entry.next_date}
+          onClick={() => handleNavigate(nextEntryDate)}
+          disabled={!nextEntryDate}
           title="Next entry"
         >
           →

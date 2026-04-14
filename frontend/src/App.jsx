@@ -139,6 +139,8 @@ export default function App() {
         <EntryEditor
           entry={entry}
           loading={loading}
+          prevEntryDate={entryDates.filter(d => d < selectedDate).at(-1) ?? null}
+          nextEntryDate={entryDates.find(d => d > selectedDate) ?? null}
           onSave={handleSave}
           onNavigate={handleNavigate}
         />

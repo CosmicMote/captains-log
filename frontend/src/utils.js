@@ -1,3 +1,9 @@
+export function addDays(dateStr, n) {
+  const [year, month, day] = dateStr.split('-').map(Number)
+  const date = new Date(year, month - 1, day + n)
+  return formatDate(date)
+}
+
 export function formatDate(date) {
   const y = date.getFullYear()
   const m = String(date.getMonth() + 1).padStart(2, '0')
