@@ -31,6 +31,7 @@ export default function CalendarSidebar({ selectedDate, entryDates, maxDate, onD
         value={calendarValue}
         maxDate={maxDateObj}
         tileClassName={tileClassName}
+        calendarType="gregory"
       />
     </aside>
   )
