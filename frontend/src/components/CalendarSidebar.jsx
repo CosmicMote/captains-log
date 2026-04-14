@@ -21,6 +21,11 @@ export default function CalendarSidebar({ selectedDate, entryDates, maxDate, onD
 
   return (
     <aside className="sidebar">
+      <div className="sidebar-today">
+        <button className="today-btn" onClick={() => onDateChange(maxDate)}>
+          Today
+        </button>
+      </div>
       <Calendar
         onChange={handleChange}
         value={calendarValue}

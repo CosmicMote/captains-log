@@ -365,6 +365,34 @@ body {
   text-transform: uppercase;
 }
 
+/* ── Sidebar today button ────────────────────────── */
+.sidebar-today {
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.today-btn {
+  width: 100%;
+  padding: 6px 0;
+  background: none;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  color: var(--accent);
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.15s, background 0.15s, color 0.15s;
+}
+
+.today-btn:hover {
+  opacity: 1;
+  background: var(--accent);
+  color: #050810;
+}
+
 /* ── react-calendar overrides ────────────────────── */
 .react-calendar {
   width: 100% !important;
