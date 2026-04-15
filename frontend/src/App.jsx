@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import CalendarSidebar from './components/CalendarSidebar.jsx'
 import EntryEditor from './components/EntryEditor.jsx'
 import LoginScreen from './components/LoginScreen.jsx'
+import BackupModal from './components/BackupModal.jsx'
 import { formatDate } from './utils.js'
 import './App.css'
 
@@ -17,6 +18,7 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem('darkMode') === 'true'
   )
+  const [backupMode, setBackupMode] = useState(null) // 'export' | 'import' | null
 
   const toggleDarkMode = () => {
     setDarkMode(prev => {
@@ -121,6 +123,12 @@ export default function App() {
       <header className="app-header">
         <h1>Captain's Log</h1>
         <div className="header-actions">
+          <button className="header-btn" onClick={() => setBackupMode('export')}>
+            Export
+          </button>
+          <button className="header-btn" onClick={() => setBackupMode('import')}>
+            Import
+          </button>
           <button className="header-btn" onClick={toggleDarkMode}>
             {darkMode ? '☀ Light' : '☾ Dark'}
           </button>
@@ -129,6 +137,17 @@ export default function App() {
           </button>
         </div>
       </header>
+      {backupMode && (
+        <BackupModal
+          mode={backupMode}
+          token={token}
+          onClose={() => setBackupMode(null)}
+          onImportSuccess={() => {
+            loadEntryDates()
+            loadEntry(selectedDate)
+          }}
+        />
+      )}
       <div className="app-body">
         <CalendarSidebar
           selectedDate={selectedDate}

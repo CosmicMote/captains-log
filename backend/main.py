@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from sqlalchemy import asc, desc
 from datetime import date, datetime, timezone
@@ -9,7 +10,8 @@ import models
 import schemas
 import auth
 import auth_config
-from database import engine, get_db
+import backup as backup_utils
+from database import engine, get_db, DB_PATH
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -58,6 +60,66 @@ def _get_adjacent_dates(entry_date: date, db: Session):
         .first()
     )
     return (prev.date if prev else None, next_.date if next_ else None)
+
+
+# ── Backup (protected) ───────────────────────────────────────────────────────
+
+@app.post("/backup/export")
+def export_backup(
+    body: dict,
+    _: None = Depends(auth.require_auth),
+):
+    password = body.get("password", "").strip()
+    if not password:
+        raise HTTPException(status_code=400, detail="Password is required")
+    if not DB_PATH.exists():
+        raise HTTPException(status_code=404, detail="Database file not found")
+
+    try:
+        encrypted = backup_utils.encrypt_db(DB_PATH, password)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Export failed: {e}")
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    filename = f"captains-log-{today}.clog"
+    return Response(
+        content=encrypted,
+        media_type="application/octet-stream",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@app.post("/backup/import")
+async def import_backup(
+    file: UploadFile = File(...),
+    password: str = Form(...),
+    _: None = Depends(auth.require_auth),
+):
+    data = await file.read()
+
+    try:
+        db_bytes = backup_utils.decrypt_backup(data, password)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    if not backup_utils.is_valid_sqlite(db_bytes):
+        raise HTTPException(
+            status_code=400,
+            detail="Decrypted data is not a valid SQLite database",
+        )
+
+    # Close all pooled connections before swapping the file
+    engine.dispose()
+
+    try:
+        DB_PATH.write_bytes(db_bytes)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to write database: {e}")
+
+    # Ensure schema is current on the restored database
+    models.Base.metadata.create_all(bind=engine)
+
+    return {"message": "Database restored successfully"}
 
 
 # ── Entries (protected) ───────────────────────────────────────────────────────

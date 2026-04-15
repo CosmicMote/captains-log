@@ -416,6 +416,196 @@ body {
   cursor: default;
 }
 
+/* ── Backup modal ────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 28px 32px;
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-title {
+  font-size: 1rem;
+  font-weight: normal;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--header-text);
+}
+
+.modal-desc {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text);
+  opacity: 0.85;
+}
+
+.modal-warning {
+  background: rgba(200, 80, 40, 0.12);
+  border: 1px solid rgba(200, 80, 40, 0.35);
+  border-radius: 2px;
+  padding: 12px 14px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.modal-warning strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #d06040;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-label {
+  font-family: system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-stardate);
+}
+
+.modal-input {
+  padding: 8px 10px;
+  background: var(--bg-textarea);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text);
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.modal-input:focus {
+  border-color: var(--accent);
+}
+
+.modal-input.input-error {
+  border-color: #d06040;
+}
+
+.modal-input-hint {
+  font-size: 0.75rem;
+  color: #d06040;
+}
+
+.file-btn {
+  padding: 8px 10px;
+  background: var(--bg-textarea);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: border-color 0.15s, opacity 0.15s;
+}
+
+.file-btn:hover {
+  opacity: 1;
+  border-color: var(--accent);
+}
+
+.modal-confirm-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text);
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.modal-confirm-row input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+
+.modal-error {
+  font-size: 0.82rem;
+  color: #d06040;
+  background: rgba(200, 80, 40, 0.1);
+  border: 1px solid rgba(200, 80, 40, 0.3);
+  border-radius: 2px;
+  padding: 8px 10px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.modal-btn {
+  padding: 7px 18px;
+  border-radius: 2px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.modal-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.modal-btn.secondary {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.modal-btn.secondary:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.modal-btn.primary {
+  background: var(--accent-dark);
+  color: #fff;
+}
+
+.modal-btn.primary:hover:not(:disabled) {
+  background: var(--accent);
+}
+
+.modal-btn.danger {
+  background: #8b3020;
+  color: #fff;
+}
+
+.modal-btn.danger:hover:not(:disabled) {
+  background: #b04030;
+}
+
 /* ── Loading state ───────────────────────────────── */
 .loading {
   flex: 1;
