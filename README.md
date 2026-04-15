@@ -5,12 +5,14 @@ A personal journal application with a Star Trek: The Next Generation theme. Writ
 ## Features
 
 - Write and edit journal entries by date
+- Rich text editing with bold, italic, underline, and strikethrough formatting
 - Calendar sidebar with dot indicators on days that have entries
-- Previous/next navigation between entries
+- Navigate between entries with previous/next buttons, or jump directly to today
 - Stardate displayed alongside each entry date
 - Dark mode with a CSS starfield and nebula effects
 - Password-protected access
 - HTTPS support (self-signed or real certificate)
+- Encrypted backup export and import (AES-256-GCM, password-protected `.clog` files)
 - Import tool for RedNotebook journals
 
 ## Tech Stack
