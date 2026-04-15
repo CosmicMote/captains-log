@@ -290,26 +290,89 @@ body {
   cursor: default;
 }
 
-/* ── Textarea ────────────────────────────────────── */
-.entry-content {
+/* ── Rich text editor ────────────────────────────── */
+.editor-wrapper {
   flex: 1;
-  width: 100%;
-  min-height: 420px;
-  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--border);
   border-radius: 2px;
   background: var(--bg-textarea);
+  transition: border-color 0.15s, background 0.2s;
+}
+
+.editor-wrapper:focus-within {
+  border-color: var(--accent);
+}
+
+.editor-toolbar {
+  display: flex;
+  gap: 2px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-sidebar);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.toolbar-btn {
+  width: 30px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: var(--text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.toolbar-btn:hover {
+  opacity: 1;
+  border-color: var(--border);
+  background: var(--bg);
+}
+
+.toolbar-btn.is-active {
+  opacity: 1;
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: #fff;
+}
+
+.entry-editor {
+  flex: 1;
+}
+
+.entry-editor .ProseMirror {
+  min-height: 420px;
+  padding: 16px 18px;
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1rem;
   line-height: 1.75;
   color: var(--text);
-  resize: vertical;
   outline: none;
-  transition: border-color 0.15s, background 0.2s, color 0.2s;
 }
 
-.entry-content:focus {
-  border-color: var(--accent);
+.entry-editor .ProseMirror p {
+  margin: 0 0 0.75em;
+}
+
+.entry-editor .ProseMirror p:last-child {
+  margin-bottom: 0;
+}
+
+/* Placeholder */
+.entry-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--border);
+  font-style: italic;
+  pointer-events: none;
+  float: left;
+  height: 0;
 }
 
 /* ── Footer (status + save) ──────────────────────── */

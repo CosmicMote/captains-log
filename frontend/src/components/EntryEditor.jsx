@@ -1,4 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import Underline from '@tiptap/extension-underline'
+import Placeholder from '@tiptap/extension-placeholder'
 import { toStardate } from '../utils.js'
 
 function displayDate(dateStr) {
@@ -11,27 +15,57 @@ function displayDate(dateStr) {
   })
 }
 
+function ToolbarBtn({ onClick, isActive, title, children }) {
+  return (
+    <button
+      type="button"
+      className={`toolbar-btn${isActive ? ' is-active' : ''}`}
+      onClick={onClick}
+      title={title}
+    >
+      {children}
+    </button>
+  )
+}
+
 export default function EntryEditor({ entry, loading, prevEntryDate, nextEntryDate, onSave, onNavigate }) {
   const [content, setContent] = useState('')
   const [savedContent, setSavedContent] = useState('')
   const [saving, setSaving] = useState(false)
   const saveRef = useRef(null)
 
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Placeholder.configure({ placeholder: "Captain's log, supplemental…" }),
+    ],
+    content: '',
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML())
+    },
+  })
+
+  // When entry changes, load content into editor and reset saved baseline
   useEffect(() => {
-    if (entry !== null) {
-      setContent(entry.content ?? '')
-      setSavedContent(entry.content ?? '')
+    if (editor && entry !== null) {
+      // setContent with emitUpdate=false so onUpdate doesn't fire
+      editor.commands.setContent(entry.content ?? '', false)
+      const html = editor.getHTML()
+      setContent(html)
+      setSavedContent(html)
     }
-  }, [entry])
+  }, [entry, editor])
 
   const hasUnsaved = content !== savedContent
 
   const handleSave = async () => {
-    if (!hasUnsaved || saving || !entry) return
+    if (!hasUnsaved || saving || !entry || !editor) return
     setSaving(true)
     try {
-      await onSave(entry.date, content)
-      setSavedContent(content)
+      const html = editor.getHTML()
+      await onSave(entry.date, html)
+      setSavedContent(html)
     } finally {
       setSaving(false)
     }
@@ -88,12 +122,39 @@ export default function EntryEditor({ entry, loading, prevEntryDate, nextEntryDa
         </button>
       </div>
 
-      <textarea
-        className="entry-content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder="Captain's log, supplemental…"
-      />
+      <div className="editor-wrapper">
+        <div className="editor-toolbar">
+          <ToolbarBtn
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            isActive={editor?.isActive('bold')}
+            title="Bold (Ctrl+B)"
+          >
+            <strong>B</strong>
+          </ToolbarBtn>
+          <ToolbarBtn
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            isActive={editor?.isActive('italic')}
+            title="Italic (Ctrl+I)"
+          >
+            <em>I</em>
+          </ToolbarBtn>
+          <ToolbarBtn
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            isActive={editor?.isActive('underline')}
+            title="Underline (Ctrl+U)"
+          >
+            <span style={{ textDecoration: 'underline' }}>U</span>
+          </ToolbarBtn>
+          <ToolbarBtn
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            isActive={editor?.isActive('strike')}
+            title="Strikethrough"
+          >
+            <s>S</s>
+          </ToolbarBtn>
+        </div>
+        <EditorContent editor={editor} className="entry-editor" />
+      </div>
 
       <div className="entry-footer">
         <span className={`status ${hasUnsaved ? 'unsaved' : 'saved'}`}>
