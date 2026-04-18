@@ -2,7 +2,7 @@
 FROM node:20-alpine AS frontend-builder
 
 WORKDIR /build
-COPY frontend/package*.json ./
+COPY frontend/package*.json frontend/.npmrc ./
 RUN npm ci
 COPY frontend/ ./
 # The app uses /api as a relative path, so no VITE_API_BASE needed at build time
