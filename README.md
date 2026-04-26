@@ -5,6 +5,7 @@ A personal journal application with a Star Trek: The Next Generation theme. Writ
 ## Features
 
 - Write and edit journal entries by date
+- Auto-save
 - Rich text editing with bold, italic, underline, and strikethrough formatting
 - Calendar sidebar with dot indicators on days that have entries
 - Navigate between entries with previous/next buttons, or jump directly to today
@@ -35,7 +36,7 @@ docker build -t captains-log .
 ### Run the container
 
 ```bash
-docker run -d \
+docker run --restart unless-stopped -d \
   --name captains-log \
   -p 8080:80 \
   -v captains-log-data:/data \
