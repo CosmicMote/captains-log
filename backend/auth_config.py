@@ -58,3 +58,40 @@ def clear_ssl_config() -> None:
     config = _load()
     config.pop("ssl", None)
     _save(config)
+
+
+# ── Dropbox backup config ──────────────────────────────────────────────────────
+
+def get_dropbox_config() -> dict | None:
+    """Return the Dropbox config dict, or None if not configured."""
+    return _load().get("dropbox")
+
+
+def set_dropbox_config(updates: dict) -> None:
+    """Merge updates into the Dropbox config, preserving existing secret fields
+    when the caller passes an empty string (i.e. 'leave unchanged')."""
+    config = _load()
+    existing = config.get("dropbox", {})
+    # Secret fields: keep existing value when update is blank
+    for secret_key in ("app_secret", "refresh_token", "backup_password"):
+        if not updates.get(secret_key, "").strip():
+            updates[secret_key] = existing.get(secret_key, "")
+    existing.update(updates)
+    config["dropbox"] = existing
+    _save(config)
+
+
+def clear_dropbox_config() -> None:
+    """Remove Dropbox configuration entirely."""
+    config = _load()
+    config.pop("dropbox", None)
+    _save(config)
+
+
+def record_dropbox_backup(filename: str, timestamp: str) -> None:
+    """Persist the timestamp and filename of the most recent successful backup."""
+    config = _load()
+    if "dropbox" in config:
+        config["dropbox"]["last_backup_at"] = timestamp
+        config["dropbox"]["last_backup_file"] = filename
+        _save(config)

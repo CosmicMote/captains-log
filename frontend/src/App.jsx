@@ -3,6 +3,7 @@ import CalendarSidebar from './components/CalendarSidebar.jsx'
 import EntryEditor from './components/EntryEditor.jsx'
 import LoginScreen from './components/LoginScreen.jsx'
 import BackupModal from './components/BackupModal.jsx'
+import DropboxSettingsModal from './components/DropboxSettingsModal.jsx'
 import { formatDate } from './utils.js'
 import './App.css'
 
@@ -18,7 +19,8 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem('darkMode') === 'true'
   )
-  const [backupMode, setBackupMode] = useState(null) // 'export' | 'import' | null
+  const [backupMode, setBackupMode] = useState(null)     // 'export' | 'import' | null
+  const [showDropbox, setShowDropbox] = useState(false)
 
   const toggleDarkMode = () => {
     setDarkMode(prev => {
@@ -129,6 +131,9 @@ export default function App() {
           <button className="header-btn" onClick={() => setBackupMode('import')}>
             Import
           </button>
+          <button className="header-btn" onClick={() => setShowDropbox(true)} title="Dropbox auto-backup settings">
+            ⚙ Dropbox
+          </button>
           <button className="header-btn" onClick={toggleDarkMode}>
             {darkMode ? '☀ Light' : '☾ Dark'}
           </button>
@@ -137,6 +142,12 @@ export default function App() {
           </button>
         </div>
       </header>
+      {showDropbox && (
+        <DropboxSettingsModal
+          token={token}
+          onClose={() => setShowDropbox(false)}
+        />
+      )}
       {backupMode && (
         <BackupModal
           mode={backupMode}

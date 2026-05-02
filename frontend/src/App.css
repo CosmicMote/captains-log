@@ -606,6 +606,71 @@ body {
   background: #b04030;
 }
 
+.modal-wide {
+  width: 520px;
+}
+
+.modal-success {
+  font-size: 0.82rem;
+  color: var(--status-saved);
+  background: rgba(40, 160, 80, 0.1);
+  border: 1px solid rgba(40, 160, 80, 0.3);
+  border-radius: 2px;
+  padding: 8px 10px;
+}
+
+.modal-select {
+  cursor: pointer;
+}
+
+/* ── Dropbox status strip ─────────────────────────── */
+.dropbox-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(40, 160, 80, 0.08);
+  border: 1px solid rgba(40, 160, 80, 0.25);
+  border-radius: 2px;
+}
+
+.dropbox-status-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dropbox-badge {
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--status-saved);
+  flex-shrink: 0;
+}
+
+.dropbox-last-backup {
+  font-size: 0.82rem;
+  color: var(--text);
+  opacity: 0.75;
+}
+
+.dropbox-filename {
+  opacity: 0.55;
+}
+
+.dropbox-status-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.dropbox-schedule-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
 /* ── Loading state ───────────────────────────────── */
 .loading {
   flex: 1;
