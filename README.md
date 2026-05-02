@@ -14,6 +14,7 @@ A personal journal application with a Star Trek: The Next Generation theme. Writ
 - Password-protected access
 - HTTPS support (self-signed or real certificate)
 - Encrypted backup export and import (AES-256-GCM, password-protected `.clog` files)
+- Automatic periodic backup to Dropbox (same encrypted format)
 - Import tool for RedNotebook journals
 
 ## Tech Stack
@@ -150,6 +151,51 @@ cd backend
 python configure_ssl.py --clear
 python start.py
 ```
+
+## Dropbox Auto-Backup
+
+The app can automatically upload encrypted backups to Dropbox on a configurable schedule (every 6, 12, 24, or 48 hours, or weekly). Each backup is an AES-256-GCM encrypted `.clog` file — the same format produced by the manual Export feature.
+
+### Setup
+
+**1. Create a Dropbox app**
+
+Go to [dropbox.com/developers/apps](https://www.dropbox.com/developers/apps) and create a new app:
+- Access type: Full Dropbox (or App Folder)
+- Under **Permissions**, enable `files.content.write`
+
+Copy the **App Key** and **App Secret** from the app's Settings tab.
+
+**2. Get a refresh token**
+
+From the `backend/` directory:
+
+```bash
+python setup_dropbox.py
+```
+
+The script opens a Dropbox authorization URL in your browser, then asks you to paste the authorization code. The resulting refresh token is saved to `auth_config.json` automatically.
+
+In Docker:
+
+```bash
+docker exec -it captains-log python /app/backend/setup_dropbox.py
+```
+
+**3. Configure in the UI**
+
+Click **⚙ Dropbox** in the app header to open the Dropbox settings. Set a backup password (used to encrypt each file), choose a Dropbox folder path, and select a backup frequency. Click **Save**.
+
+Use **Backup Now** to trigger an immediate upload and verify everything is working.
+
+### Notes
+
+- The app checks whether a backup is due every 30 minutes, so the actual upload time may differ from the configured interval by up to 30 minutes.
+- The first backup after configuration runs at the next 30-minute check.
+- Backups are added (not overwritten), so older files accumulate in your Dropbox folder. Clean them up manually as needed.
+- The backup password is independent of your login password. You will need it to restore from a backup using the **Import** feature.
+
+---
 
 ## Importing from RedNotebook
 
