@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from contextlib import asynccontextmanager
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import List, Optional
 
 from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, Form
@@ -240,7 +240,7 @@ def list_entry_dates(
 
 @app.get("/entries/{entry_date}", response_model=schemas.JournalEntryResponse)
 def get_entry(
-    entry_date,
+    entry_date: date,
     db: Session = Depends(get_db),
     _: None = Depends(auth.require_auth),
 ):
@@ -260,12 +260,11 @@ def get_entry(
 
 @app.put("/entries/{entry_date}", response_model=schemas.JournalEntryResponse)
 def upsert_entry(
-    entry_date,
+    entry_date: date,
     body: schemas.JournalEntryUpsert,
     db: Session = Depends(get_db),
     _: None = Depends(auth.require_auth),
 ):
-    from datetime import timezone as tz
     entry = (
         db.query(models.JournalEntry)
         .filter(models.JournalEntry.date == entry_date)
@@ -273,7 +272,7 @@ def upsert_entry(
     )
     if entry:
         entry.content = body.content
-        entry.updated_at = datetime.now(tz.utc)
+        entry.updated_at = datetime.now(timezone.utc)
     else:
         entry = models.JournalEntry(date=entry_date, content=body.content)
         db.add(entry)
