@@ -53,6 +53,7 @@ export default function EntryEditor({ entry, loading, prevEntryDate, nextEntryDa
   const saveRef        = useRef(null)
   const autoSaveRef    = useRef(null)
   const prevEntryDateRef = useRef(null)
+  const justSavedRef   = useRef(false) // true while `entry` is expected to update as an echo of our own save
 
   const editor = useEditor({
     extensions: [
@@ -67,19 +68,27 @@ export default function EntryEditor({ entry, loading, prevEntryDate, nextEntryDa
   })
 
   // When entry changes, load content into editor and reset save state.
-  // Only clear autoSavedAt when navigating to a different date — not when
-  // the same entry object is refreshed after a save (which also triggers
-  // this effect but should preserve the auto-save timestamp).
+  // Skip reloading content when this update is just our own save echoing
+  // back — the editor may already have newer keystrokes typed during the
+  // save's network round-trip, and clobbering them here is what caused
+  // characters to get dropped during autosave. Only a real navigation to a
+  // different date, or an externally-changed entry (e.g. an import), should
+  // overwrite the editor's live content.
   useEffect(() => {
-    if (editor && entry !== null) {
-      editor.commands.setContent(entry.content ?? '', false)
-      const html = editor.getHTML()
-      setContent(html)
-      setSavedContent(html)
-      if (entry.date !== prevEntryDateRef.current) {
-        setAutoSavedAt(null)
-        prevEntryDateRef.current = entry.date
-      }
+    if (!editor || entry === null) return
+
+    const isNewDate = entry.date !== prevEntryDateRef.current
+    const isOwnSaveEcho = !isNewDate && justSavedRef.current
+    justSavedRef.current = false
+    if (isOwnSaveEcho) return
+
+    editor.commands.setContent(entry.content ?? '', false)
+    const html = editor.getHTML()
+    setContent(html)
+    setSavedContent(html)
+    if (isNewDate) {
+      setAutoSavedAt(null)
+      prevEntryDateRef.current = entry.date
     }
   }, [entry, editor])
 
@@ -91,6 +100,7 @@ export default function EntryEditor({ entry, loading, prevEntryDate, nextEntryDa
     setSaving(true)
     try {
       const html = editor.getHTML()
+      justSavedRef.current = true
       await onSave(entry.date, html)
       setSavedContent(html)
       setAutoSavedAt(null)
@@ -108,6 +118,7 @@ export default function EntryEditor({ entry, loading, prevEntryDate, nextEntryDa
     setSaving(true)
     try {
       const html = editor.getHTML()
+      justSavedRef.current = true
       await onSave(entry.date, html)
       setSavedContent(html)
       setAutoSavedAt(new Date())
