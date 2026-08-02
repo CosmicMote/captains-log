@@ -8,6 +8,8 @@ import { formatDate } from './utils.js'
 import './App.css'
 
 const API_BASE = '/api'
+const INACTIVITY_TIMEOUT_MS = 15 * 60_000 // auto sign-out after 15 minutes of inactivity
+const ACTIVITY_EVENTS = ['keydown', 'mousedown', 'mousemove', 'scroll', 'touchstart']
 
 export default function App() {
   const today = formatDate(new Date())
@@ -38,6 +40,28 @@ export default function App() {
     localStorage.removeItem('token')
     setToken(null)
   }, [])
+
+  // Auto sign-out after a period of inactivity. Any keyboard, mouse, or
+  // scroll activity resets the timer; autosave (which runs every minute
+  // regardless of activity) already covers saving in-progress edits well
+  // before this fires.
+  useEffect(() => {
+    if (!token) return
+
+    let timeoutId
+    const resetTimer = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(handleLogout, INACTIVITY_TIMEOUT_MS)
+    }
+
+    ACTIVITY_EVENTS.forEach(evt => window.addEventListener(evt, resetTimer))
+    resetTimer()
+
+    return () => {
+      clearTimeout(timeoutId)
+      ACTIVITY_EVENTS.forEach(evt => window.removeEventListener(evt, resetTimer))
+    }
+  }, [token, handleLogout])
 
   // Authenticated fetch — clears token on 401
   const authFetch = useCallback(async (path, options = {}) => {
