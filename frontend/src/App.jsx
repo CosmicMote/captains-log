@@ -4,10 +4,9 @@ import EntryEditor from './components/EntryEditor.jsx'
 import LoginScreen from './components/LoginScreen.jsx'
 import BackupModal from './components/BackupModal.jsx'
 import DropboxSettingsModal from './components/DropboxSettingsModal.jsx'
-import { formatDate } from './utils.js'
+import { formatDate, API_BASE } from './utils.js'
 import './App.css'
 
-const API_BASE = '/api'
 const INACTIVITY_TIMEOUT_MS = 15 * 60_000 // auto sign-out after 15 minutes of inactivity
 const ACTIVITY_EVENTS = ['keydown', 'mousedown', 'mousemove', 'scroll', 'touchstart']
 

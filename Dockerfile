@@ -1,11 +1,18 @@
 # ── Stage 1: Build the React frontend ────────────────────────────────────────
 FROM node:20-alpine AS frontend-builder
 
+# Optional sub-path to serve the app from behind a reverse proxy, e.g.
+# --build-arg BASE_PATH=/captains-log for https://host/captains-log/.
+# Defaults to the root. This is baked into the built assets, so it must be
+# set at image build time rather than via `docker run -e`.
+ARG BASE_PATH=""
+ENV BASE_PATH=${BASE_PATH}
+
 WORKDIR /build
 COPY frontend/package*.json frontend/.npmrc ./
 RUN npm ci
 COPY frontend/ ./
-# The app uses /api as a relative path, so no VITE_API_BASE needed at build time
+# The app uses /api as a relative (base-aware) path, so no VITE_API_BASE needed at build time
 RUN npm run build
 
 

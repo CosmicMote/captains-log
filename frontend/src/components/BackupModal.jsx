@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
-
-const API_BASE = '/api'
+import { API_BASE } from '../utils.js'
 
 export default function BackupModal({ mode, token, onClose, onImportSuccess }) {
   const [password, setPassword]     = useState('')

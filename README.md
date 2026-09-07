@@ -67,6 +67,38 @@ docker exec -it captains-log python /app/backend/import_rednotebook.py /data/jou
 
 For production use, place a reverse proxy (nginx, Caddy, Traefik) in front of the container to handle TLS termination, and point it at `http://localhost:8080`. This is simpler and more flexible than managing certs inside the container.
 
+### Serving from a sub-path
+
+By default the app expects to live at the root of its domain (`https://host/`). If your
+reverse proxy instead routes to it by path — e.g. `https://darwin.local/captains-log` —
+build the image with the `BASE_PATH` build argument so the app generates correct asset
+and API URLs for that sub-path:
+
+```bash
+docker build --build-arg BASE_PATH=/captains-log -t captains-log .
+```
+
+`BASE_PATH` is baked into the built frontend, so it must be set at image build time
+(not `docker run -e`). Leave it unset to keep serving from the root.
+
+Your reverse proxy should strip the prefix before forwarding to the container, e.g. in nginx:
+
+```nginx
+location /captains-log/ {
+    proxy_pass         http://localhost:8080/;
+    proxy_set_header    Host              $host;
+    proxy_set_header    X-Real-IP         $remote_addr;
+    proxy_set_header    X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header    X-Forwarded-Proto $scheme;
+}
+```
+
+The trailing slashes on both the `location` and `proxy_pass` are what strip `/captains-log`
+before the request reaches the container — the container itself keeps serving from `/`.
+
+For local (non-Docker) development, set `BASE_PATH` in `frontend/.env` before running
+`npm run build` or `npm run dev`.
+
 ---
 
 ## Local Development Setup

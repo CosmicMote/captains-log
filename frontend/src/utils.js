@@ -1,3 +1,8 @@
+// Base URL for backend API calls. Derived from Vite's configured `base` so the
+// app keeps working when served from a sub-path behind a reverse proxy
+// (see BASE_PATH in vite.config.js).
+export const API_BASE = `${import.meta.env.BASE_URL}api`
+
 export function addDays(dateStr, n) {
   const [year, month, day] = dateStr.split('-').map(Number)
   const date = new Date(year, month - 1, day + n)

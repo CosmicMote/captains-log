@@ -1,7 +1,6 @@
 import { useState } from 'react'
+import { API_BASE } from '../utils.js'
 import './LoginScreen.css'
-
-const API_BASE = '/api'
 
 export default function LoginScreen({ onLogin }) {
   const [password, setPassword] = useState('')
