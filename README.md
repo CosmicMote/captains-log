@@ -71,15 +71,15 @@ For production use, place a reverse proxy (nginx, Caddy, Traefik) in front of th
 
 By default the app expects to live at the root of its domain (`https://host/`). If your
 reverse proxy instead routes to it by path — e.g. `https://darwin.local/captains-log` —
-build the image with the `BASE_PATH` build argument so the app generates correct asset
-and API URLs for that sub-path:
+set the `BASE_PATH` environment variable when running the container so the app generates
+correct asset and API URLs for that sub-path:
 
 ```bash
-docker build --build-arg BASE_PATH=/captains-log -t captains-log .
+docker run -e BASE_PATH=/captains-log ... captains-log
 ```
 
-`BASE_PATH` is baked into the built frontend, so it must be set at image build time
-(not `docker run -e`). Leave it unset to keep serving from the root.
+`BASE_PATH` is read at container start, so the same image can be served from any path.
+Leave it unset to keep serving from the root. Leading and trailing slashes are optional.
 
 Your reverse proxy should strip the prefix before forwarding to the container, e.g. in nginx:
 
@@ -95,9 +95,6 @@ location /captains-log/ {
 
 The trailing slashes on both the `location` and `proxy_pass` are what strip `/captains-log`
 before the request reaches the container — the container itself keeps serving from `/`.
-
-For local (non-Docker) development, set `BASE_PATH` in `frontend/.env` before running
-`npm run build` or `npm run dev`.
 
 ---
 

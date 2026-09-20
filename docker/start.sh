@@ -4,6 +4,20 @@ set -e
 # Ensure the data directory exists (in case the volume wasn't pre-created)
 mkdir -p /data
 
+# Render index.html with the runtime BASE_PATH (e.g. /captains-log). Slashes are
+# normalized; the value is restricted to safe URL characters since it goes into
+# HTML via sed.
+BASE_PATH=$(printf '%s' "${BASE_PATH:-}" | sed 's|^/*||; s|/*$||')
+case "$BASE_PATH" in
+    *[!A-Za-z0-9._~/-]*)
+        echo "Invalid BASE_PATH '$BASE_PATH': use only letters, digits and . _ ~ - /" >&2
+        exit 1
+        ;;
+esac
+if [ -n "$BASE_PATH" ]; then BASE_HREF="/$BASE_PATH/"; else BASE_HREF="/"; fi
+sed "s|<base href=\"/\" />|<base href=\"$BASE_HREF\" />|" \
+    /app/index.html.template > /app/frontend/index.html
+
 # Start uvicorn in the background
 cd /app/backend
 uvicorn main:app --host 127.0.0.1 --port 8000 &

@@ -1,13 +1,6 @@
 # ── Stage 1: Build the React frontend ────────────────────────────────────────
 FROM node:20-alpine AS frontend-builder
 
-# Optional sub-path to serve the app from behind a reverse proxy, e.g.
-# --build-arg BASE_PATH=/captains-log for https://host/captains-log/.
-# Defaults to the root. This is baked into the built assets, so it must be
-# set at image build time rather than via `docker run -e`.
-ARG BASE_PATH=""
-ENV BASE_PATH=${BASE_PATH}
-
 WORKDIR /build
 COPY frontend/package*.json frontend/.npmrc ./
 RUN npm ci
@@ -34,6 +27,8 @@ COPY backend/ ./
 
 # Copy built frontend from Stage 1
 COPY --from=frontend-builder /build/dist /app/frontend
+# Keep index.html as a template; start.sh renders it with the runtime BASE_PATH
+RUN mv /app/frontend/index.html /app/index.html.template
 
 # nginx config
 COPY docker/nginx.conf /etc/nginx/sites-enabled/default
@@ -45,6 +40,11 @@ RUN chmod +x /start.sh
 # /data holds journal.db and auth_config.json — mount a volume here
 VOLUME /data
 ENV JOURNAL_DATA_DIR=/data
+
+# Optional sub-path to serve the app from behind a reverse proxy, e.g.
+# docker run -e BASE_PATH=/captains-log for https://host/captains-log/.
+# Defaults to the root.
+ENV BASE_PATH=""
 
 EXPOSE 80
 

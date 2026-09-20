@@ -6,14 +6,11 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const apiTarget = env.VITE_API_BASE ?? 'http://localhost:8000'
 
-  // Optional sub-path the app is served from behind a reverse proxy, e.g.
-  // BASE_PATH=/captains-log for https://host/captains-log/. Defaults to the
-  // root. Leading/trailing slashes are normalized.
-  const rawBasePath = (env.BASE_PATH ?? '').trim().replace(/^\/+|\/+$/g, '')
-  const base = rawBasePath ? `/${rawBasePath}/` : '/'
-
   return {
-    base,
+    // Relative asset URLs, resolved against the <base href> tag in index.html.
+    // That tag is set at container start from BASE_PATH, so one build can be
+    // served from any sub-path.
+    base: './',
     plugins: [react()],
     server: {
       proxy: {
