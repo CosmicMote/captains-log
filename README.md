@@ -191,7 +191,7 @@ The app can automatically upload encrypted backups to Dropbox on a configurable 
 
 Go to [dropbox.com/developers/apps](https://www.dropbox.com/developers/apps) and create a new app:
 - Access type: Full Dropbox (or App Folder)
-- Under **Permissions**, enable `files.content.write`
+- Under **Permissions**, enable `files.content.write` and `files.metadata.read` (the latter is needed to find and delete old backups)
 
 Copy the **App Key** and **App Secret** from the app's Settings tab.
 
@@ -221,7 +221,8 @@ Use **Backup Now** to trigger an immediate upload and verify everything is worki
 
 - The app checks whether a backup is due every 30 minutes, so the actual upload time may differ from the configured interval by up to 30 minutes.
 - The first backup after configuration runs at the next 30-minute check.
-- Backups are added (not overwritten), so older files accumulate in your Dropbox folder. Clean them up manually as needed.
+- Only the most recent backups are kept. After each successful upload, older `captains-log-*.clog` files in the Dropbox folder beyond the limit are deleted (including any that accumulated before the limit existed). Set the `MAX_BACKUPS` environment variable to change the limit (default `5`, minimum `1`). Other files in the folder are never touched.
+- If you authorized Dropbox before enabling `files.metadata.read`, re-run `setup_dropbox.py` after enabling it; until then pruning fails with a warning in the log, and backups still upload normally.
 - The backup password is independent of your login password. You will need it to restore from a backup using the **Import** feature.
 
 ---

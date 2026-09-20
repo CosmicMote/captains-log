@@ -46,6 +46,9 @@ ENV JOURNAL_DATA_DIR=/data
 # Defaults to the root.
 ENV BASE_PATH=""
 
+# Number of Dropbox backups to keep; older ones are deleted after each backup.
+ENV MAX_BACKUPS=5
+
 EXPOSE 80
 
 CMD ["/start.sh"]
